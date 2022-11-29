@@ -1,0 +1,23 @@
+apiVersion: hostpathprovisioner.kubevirt.io/v1beta1
+kind: HostPathProvisioner
+metadata:
+  name: hostpath-provisioner-node2
+spec:
+  imagePullPolicy: Always
+  storagePools:
+  - name: node-2
+    path: /data-kubevirt
+  workload:
+    nodeSelector:
+      kubernetes.io/hostname: node2
+---
+allowVolumeExpansion: true
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: hostpath-csi-node2
+parameters:
+  storagePool: node-2
+provisioner: kubevirt.io.hostpath-provisioner
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer

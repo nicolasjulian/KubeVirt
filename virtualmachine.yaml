@@ -1,0 +1,37 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: my-ubuntu
+  labels:
+    vm: my-ubuntu
+spec:
+  runStrategy: Always
+  template:
+    metadata:
+      labels:
+        vm: my-ubuntu
+    spec:
+      terminationGracePeriodSeconds: 30
+      domain:
+        resources:
+          requests:
+            cpu: 1
+            memory: 1024M 
+        devices:
+          disks:
+          - name: datavolume-disk1
+            disk:
+              bus: virtio
+          - disk:
+              bus: virtio
+            name: cloudinitdisk
+      volumes:
+      - dataVolume:
+          name: myvm-volume-data
+        name: datavolume-disk1
+      - name: cloudinitdisk
+        cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            password: Hayomaucarileaksdigithubgwya???ngerixxxxxxxxxAdaHeker
+            chpasswd: { expire: False }
