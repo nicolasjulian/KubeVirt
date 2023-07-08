@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - image-base.yaml
+  - datavolume-myubuntu.yaml
+  - sc.yaml
+  - service.yaml
+  - virtualmachine.yaml

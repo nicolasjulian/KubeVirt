@@ -1,0 +1,54 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: ubuntu-new
+  labels:
+    vm: ubuntu-new
+spec:
+  dataVolumeTemplates:
+  - apiVersion: cdi.kubevirt.io/v1beta1
+    kind: DataVolume
+    metadata:
+      name: ubuntu-new
+    spec:
+      pvc:
+        storageClassName: local-hostpath-node4
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 18Gi
+      source:
+        pvc:
+          name: ubuntu-image
+          namespace: default
+  runStrategy: Always
+  template:
+    metadata:
+      labels:
+        vm: ubuntu-new
+    spec:
+      terminationGracePeriodSeconds: 30
+      domain:
+        resources:
+          requests:
+            cpu: '4'
+            memory: 8384M
+        devices:
+          disks:
+          - name: datavolume-disk1
+            disk:
+              bus: virtio
+          - disk:
+              bus: virtio
+            name: cloudinitdisk
+      volumes:
+      - dataVolume:
+          name: ubuntu-new
+        name: datavolume-disk1
+      - name: cloudinitdisk
+        cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            password: demoinfrabekasi
+            chpasswd: { expire: False }

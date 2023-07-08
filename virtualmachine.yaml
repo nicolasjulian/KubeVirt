@@ -1,0 +1,37 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: internal-tools
+  labels:
+    vm: internal-tools
+spec:
+  runStrategy: Always
+  template:
+    metadata:
+      labels:
+        vm: internal-tools
+    spec:
+      terminationGracePeriodSeconds: 30
+      domain:
+        resources:
+          requests:
+            cpu: '2'
+            memory: 8384M
+        devices:
+          disks:
+          - name: datavolume-disk1
+            disk:
+              bus: virtio
+          - disk:
+              bus: virtio
+            name: cloudinitdisk
+      volumes:
+      - dataVolume:
+          name: internal-tools-data-0
+        name: datavolume-disk1
+      - name: cloudinitdisk
+        cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            password: gwgantengbangetteuy
+            chpasswd: { expire: False }

@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vmiservice
+spec:
+  ports:
+  - port: 27017
+    protocol: TCP
+    targetPort: 22
+  selector:
+    vm: my-ubuntu
+  type: LoadBalancer
+---    
+apiVersion: v1
+kind: Service
+metadata:
+  name: ubuntu-domain
+spec:
+  ports:
+  - port: 9100
+    protocol: TCP
+    targetPort: 9100
+    name: metrics
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+    name: app
+  selector:
+    vm: my-ubuntu
+  type: ClusterIP

@@ -1,0 +1,16 @@
+kind: DataVolume
+apiVersion: cdi.kubevirt.io/v1beta1
+metadata:
+  name: internal-tools-data-0
+spec:
+  source:
+    pvc:
+      namespace: default
+      name: ubuntu-image
+  pvc:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: local-hostpath-node4

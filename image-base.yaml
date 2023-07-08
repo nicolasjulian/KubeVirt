@@ -1,0 +1,16 @@
+kind: DataVolume
+apiVersion: cdi.kubevirt.io/v1beta1
+metadata:
+  name: ubuntu-image
+  namespace: default
+spec:
+  source:
+    http:
+      url: https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
+  pvc:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 3Gi
+    storageClassName: local-hostpath-node4
